@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "nuevos-colaboradores-client-side-solution",
+    "id": "931defc0-11d1-4fa3-a52f-ddae41347596",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.14.0"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "Nuevos Colaboradores description"
+      },
+      "longDescription": {
+        "default": "Nuevos Colaboradores description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "nuevos-colaboradores Feature",
+        "description": "The feature that activates elements of the nuevos-colaboradores solution.",
+        "id": "57f2d799-06a5-46a5-a11f-3f46aa7dc03e",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/nuevos-colaboradores.sppkg"
+  }
+}
