@@ -11,7 +11,7 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'NewPartnerWebPartStrings';
 import NewPartner from './components/NewPartner';
 import { INewPartnerProps } from './components/INewPartnerProps';
-
+import { spfi, SPFx } from "@pnp/sp";
 export interface INewPartnerWebPartProps {
   description: string;
 }
@@ -21,9 +21,10 @@ export default class NewPartnerWebPart extends BaseClientSideWebPart<INewPartner
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
 
-  protected onInit(): Promise<void> {
+  protected async onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
-
+    await super.onInit();
+    const sp = spfi().using(SPFx(this.context));
     return super.onInit();
   }
 
