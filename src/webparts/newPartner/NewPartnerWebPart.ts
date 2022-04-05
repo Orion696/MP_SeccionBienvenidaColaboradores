@@ -3,6 +3,9 @@ import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
+  IPropertyPaneDropdownOption,
+  PropertyPaneDropdown,
+  PropertyPaneSlider,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
@@ -12,19 +15,33 @@ import * as strings from 'NewPartnerWebPartStrings';
 import NewPartner from './components/NewPartner';
 import { INewPartnerProps } from './components/INewPartnerProps';
 import { spfi, SPFx } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
 export interface INewPartnerWebPartProps {
   description: string;
+  ListName: string;
+  Cantidad:string;  
 }
 
 export default class NewPartnerWebPart extends BaseClientSideWebPart<INewPartnerWebPartProps> {
 
   private _isDarkTheme: boolean = false;
   private _environmentMessage: string = '';
-
+  private _dropdownOptions: IPropertyPaneDropdownOption[] = [];
+  
+    
   protected async onInit(): Promise<void> {
+    const  sp =spfi().using(SPFx(this.context));
+    const ListTitles:any= await sp.web.lists.filter('Hidden eq false')();
+     this._dropdownOptions = ListTitles.map((list) => {
+        return {
+          key: list.Title,
+          text: list.Title
+        };
+      });
+  
     this._environmentMessage = this._getEnvironmentMessage();
-    await super.onInit();
-    const sp = spfi().using(SPFx(this.context));
     return super.onInit();
   }
 
@@ -36,7 +53,10 @@ export default class NewPartnerWebPart extends BaseClientSideWebPart<INewPartner
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
-        userDisplayName: this.context.pageContext.user.displayName
+        userDisplayName: this.context.pageContext.user.displayName,
+        context:this.context,
+        ListName:this.properties.ListName,
+        Count:this.properties.Cantidad
       }
     );
 
@@ -69,12 +89,33 @@ export default class NewPartnerWebPart extends BaseClientSideWebPart<INewPartner
   protected onDispose(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
   }
+  
 
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
-
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+    let message=[]
+    message.push(
+      PropertyPaneDropdown('ListName', {
+        label: strings.ListNameFieldLabel,
+        options:this._dropdownOptions
+      })
+    )
+    message.push(
+      PropertyPaneTextField('Title', {
+        label: strings.TitleFieldLabel
+      })
+    );
+   
+    message.push(
+      PropertyPaneSlider('Cantidad', {
+        label: strings.CantidadFieldLabel,
+        min:4,
+        max:20,        
+      })
+    )
+    
     return {
       pages: [
         {
@@ -84,15 +125,32 @@ export default class NewPartnerWebPart extends BaseClientSideWebPart<INewPartner
           groups: [
             {
               groupName: strings.BasicGroupName,
-              groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
-              ]
+              groupFields: message
             }
           ]
         }
       ]
     };
   }
+  // protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+  //   return {
+  //     pages: [
+  //       {
+  //         header: {
+  //           description: strings.PropertyPaneDescription
+  //         },
+  //         groups: [
+  //           {
+  //             groupName: strings.BasicGroupName,
+  //             groupFields: [
+  //               PropertyPaneTextField('description', {
+  //                 label: strings.DescriptionFieldLabel
+  //               })
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   };
+  // }
 }

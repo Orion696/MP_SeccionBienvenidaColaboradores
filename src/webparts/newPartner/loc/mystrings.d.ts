@@ -2,6 +2,9 @@ declare interface INewPartnerWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   DescriptionFieldLabel: string;
+  ListNameFieldLabel: string;
+  TitleFieldLabel: string;
+  CantidadFieldLabel:string;
   AppLocalEnvironmentSharePoint: string;
   AppLocalEnvironmentTeams: string;
   AppSharePointEnvironment: string;
