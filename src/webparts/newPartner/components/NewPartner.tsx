@@ -12,12 +12,13 @@ import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
 import { Dialog, DialogType, DialogFooter } from '@fluentui/react/lib/Dialog';
 import { IPersonaSharedProps, Persona, PersonaSize, PersonaPresence } from '@fluentui/react/lib/Persona';
 import {useBoolean } from '@fluentui/react-hooks';
-import { DefaultPalette, IStackStyles, IStackTokens, PrimaryButton, Stack } from '@fluentui/react';
+import { DefaultPalette, IStackStyles, IStackTokens, mergeStyles, PrimaryButton, Stack } from '@fluentui/react';
 import Carousel from "react-multi-carousel";
 import { Text, ITextProps } from '@fluentui/react/lib/Text';
 import "react-multi-carousel/lib/styles.css";
 import { TitleFieldLabel } from 'NewPartnerWebPartStrings';
 import * as moment from 'moment';
+
 
 const  newPartner= (props,{})=>{
   const[state,setState]=useState({data:[]})
@@ -80,42 +81,56 @@ const verticalGapStackTokens: IStackTokens = {
   padding: 10,
 };
 
+
+
 return (<>
   {ListName==undefined?
   <Placeholder iconName='Edit'
-  iconText='Configura el webpart'
+  iconText='Confi gura el webpart'
   description='Por favor configura la fuente de datos y la cantidad a mostrar'
   buttonLabel='Configurar'
   onConfigure={_onConfigure} />
   
  :<section className={`${styles.newPartner}`}>
-  <h3>Bienvenidos nuevos colaboradores</h3>
+  <h3 className={styles.textitle}>Bienvenidos nuevos colaboradores</h3>
   <Carousel
   swipeable={false}
-  draggable={false}
+  draggable={true}
   showDots={true}
   responsive={responsive}
-  autoPlay={props.deviceType !== "mobile" ? true : false}
+
   ssr={true} // means to render carousel on server-side.
   infinite={true}
+  autoPlay
   autoPlaySpeed={5000}
   keyBoardControl={true}
   containerClass="carousel-container"
   removeArrowOnDeviceType={["tablet", "mobile"]}
   dotListClass="custom-dot-list-style"
   itemClass="carousel-item-padding-40-px"
+  
+
 >
   {state.data.map((item) => (<LivePersona upn={item.InformacionUsuario.EMail}
      template={
        <>
-         <Persona 
+        
+        
+
+         
+      <Stack  >
+        
+        <Stack.Item align="center" >
+          <span className={stackItemStyles}><Persona className={styles.centerimg}
            imageUrl={`/_layouts/15/userphoto.aspx?size=L&username=${item.InformacionUsuario.EMail}`} 
-           coinSize={120} />
-           <Stack  tokens={verticalGapStackTokens}>
-            <h3>{item.InformacionUsuario.Title}</h3>
-            <Text variant='medium'>{item.InformacionUsuario.JobTitle!=null?item.InformacionUsuario.JobTitle:item.Title}</Text>
-            <h5>{moment(item.FechaIngreso).format('ll')}</h5>      
-          </Stack>
+           coinSize={130} /></span>
+            <span className={stackItemStyles}><h3>{item.InformacionUsuario.Title}</h3></span>
+            <span className={stackItemStyles}><Text variant='medium'>{item.InformacionUsuario.JobTitle!=null?item.InformacionUsuario.JobTitle:item.Title}</Text></span>
+            <span className={stackItemStyles}>   <h5>{moment(item.FechaIngreso).format('ll')}</h5>  </span>
+        </Stack.Item>
+        
+      </Stack>
+
        </>
      }
      serviceScope={context.serviceScope}
@@ -134,4 +149,22 @@ return (<>
       </Dialog>
   </>);
 }
+const stackItemStyles = mergeStyles({
+  alignItems: 'center',
+  
+  display: 'flex',
+  
+  justifyContent: 'center',
+  
+});
+
+const CustomRightArrow = ({ onClick, ...rest }) => {
+  const {
+    onMove,
+    carouselState: { currentSlide, deviceType }
+  } = rest;
+  // onMove means if dragging or swiping in progress.
+  return <button onClick={() => onClick()} />;
+};
+
 export default newPartner;

@@ -19,6 +19,16 @@
   max-width: 420px;
 }
 
+.textitle
+{
+  color: "[theme:themePrimary, default: #bd9e55]";
+
+}
+
+.centerimg
+{
+  flex-direction: column
+}
 .links {
   a {
     text-decoration: none;
