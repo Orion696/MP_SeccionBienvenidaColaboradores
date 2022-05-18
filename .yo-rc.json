@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.14.0",
+    "libraryName": "nuevos-colaboradores",
+    "libraryId": "931defc0-11d1-4fa3-a52f-ddae41347596",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "Nuevos Colaboradores",
+    "solutionShortDescription": "Nuevos Colaboradores description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
