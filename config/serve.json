@@ -2,5 +2,5 @@
   "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
   "port": 4321,
   "https": true,
-  "initialPage": "https://poderosacompe.sharepoint.com/sites/Intranet_corporativa_dev/_layouts/workbench.aspx"
+  "initialPage": "aca va url del sitio/_layouts/workbench.aspx"
 }
